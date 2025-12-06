@@ -1,0 +1,27 @@
+layout (vertices = 3) out;
+
+in vec4 pos_cs_in[];
+in vec2 uv_cs_in[];
+in vec3 normal_cs_in[];
+in vec3 pos_obj_tcs[];
+
+out vec4 pos_es_in[];
+out vec2 uv_es_in[];
+out vec3 normal_es_in[];
+out vec3 pos_obj_tes[];
+
+void main()
+{   
+  if(gl_InvocationID == 0) 
+  {
+    gl_TessLevelOuter[0] = 1;
+    gl_TessLevelOuter[1] = 1;
+    gl_TessLevelOuter[2] = 1;
+    gl_TessLevelInner[0] = 1;
+  }
+  pos_es_in[gl_InvocationID] = pos_cs_in[gl_InvocationID];
+  uv_es_in[gl_InvocationID] = uv_cs_in[gl_InvocationID];
+  normal_es_in[gl_InvocationID] = normal_cs_in[gl_InvocationID];
+  pos_obj_tes[gl_InvocationID] = pos_obj_tcs[gl_InvocationID];
+}
+

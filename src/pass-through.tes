@@ -1,0 +1,35 @@
+layout(triangles, equal_spacing, ccw) in;
+
+in vec4 pos_es_in[];
+in vec2 uv_es_in[];
+in vec3 normal_es_in[];
+in vec3 pos_obj_tes[];
+
+out vec4 pos_fs_in;
+out vec2 uv_fs_in;
+out vec3 normal_fs_in;
+out vec3 pos_obj_fs;
+
+vec4 interpolate4(vec3 b, vec4 a, vec4 b1, vec4 c) {
+    return a * b.x + b1 * b.y + c * b.z;
+}
+
+vec3 interpolate3(vec3 b, vec3 a, vec3 b1, vec3 c) {
+    return a * b.x + b1 * b.y + c * b.z;
+}
+
+vec2 interpolate2(vec3 b, vec2 a, vec2 b1, vec2 c) {
+    return a * b.x + b1 * b.y + c * b.z;
+}
+
+void main()
+{
+  pos_fs_in = interpolate4(gl_TessCoord, pos_es_in[0], pos_es_in[1], pos_es_in[2]);
+  uv_fs_in = interpolate2(gl_TessCoord, uv_es_in[0], uv_es_in[1], uv_es_in[2]);
+  normal_fs_in = interpolate3(gl_TessCoord, normal_es_in[0], normal_es_in[1], normal_es_in[2]);
+  normal_fs_in = normalize(normal_fs_in);
+  pos_obj_fs = interpolate3(gl_TessCoord, pos_obj_tes[0], pos_obj_tes[1], pos_obj_tes[2]);
+
+  gl_Position = pos_fs_in;
+}
+
