@@ -32,7 +32,7 @@ A subgenre of NPR is what is called “painterly rendering”. This involves tec
 
 ![](img/reddit.png)
 
-I just had to try this technique out for myself. The author of the post mentioned 2 key points: classical n-dot-l shading (hello lecture 3) and Voronoi-driven paint-like alpha masks. The former is straightforward, but what about the latter? (Voronoi noise)[https://en.wikipedia.org/wiki/Worley_noise] is a pseudorandom function that can be used as a “seed” to create interesting, natural looking patterns after some manipulation, much like our Perlin noise implemented for A6. It seemed like the paint-like “blobs” were created using Voronoi noise. That sounded simple enough, so here began my journey…
+I just had to try this technique out for myself. The author of the post mentioned 2 key points: classical n-dot-l shading (hello lecture 3) and Voronoi-driven paint-like alpha masks. The former is straightforward, but what about the latter? [Voronoi noise](https://en.wikipedia.org/wiki/Worley_noise) is a pseudorandom function that can be used as a “seed” to create interesting, natural looking patterns after some manipulation, much like our Perlin noise implemented for A6. It seemed like the paint-like “blobs” were created using Voronoi noise. That sounded simple enough, so here began my journey…
 
 ## Blender Proof-of-Concept
 My goal is to create a small scene with the text “CSC317!” using this painterly rendering technique. This means three main sub-objectives:
