@@ -23,7 +23,7 @@ Compilation and execution was confirmed on an Apple M1 Pro machine running macOS
 - Stylised toon shading, implemented in GLSL (src/painterly.fs)
 - Custom-modelled scene geometry using Blender geometry nodes (data/showcase.obj)
 - Combined all of the above for a painterly render of a “CSC317!” scene
-- Minor modifications to `main.cpp`, `mesh_to_vao.h`, `pass-through.vs`, `pass-through.tcs`, `pass-through.tes` and the addition of `tiny_obj_loader.h` to allow OBJ file reading and the passing of UV + normals to the fragment shader (to speed up implementation, I have used an external library (`tiny_obj_loader.h`) and its sample code at: https://github.com/tinyobjloader/tinyobjloader
+- Minor modifications to `main.cpp`, `mesh_to_vao.h`, `pass-through.vs`, `pass-through.tcs`, `pass-through.tes` and the addition of `tiny_obj_loader.h` to allow OBJ file reading and the passing of UV + normals to the fragment shader. To speed up implementation, I have used an external library (`tiny_obj_loader.h`) and its sample code at: https://github.com/tinyobjloader/tinyobjloader.
 
 ## Background
 I love non-photorealistic rendering (NPR). There is a certain charm to stylised 3D work that often makes them timeless (see [The Legend of Zelda: The Wind Waker](https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_The_Wind_Waker) from 2002!), which is, in my opinion, much more difficult to achieve in photorealistic rendering. Therefore, following my previous NPR projects such as [METRO](https://musicofmusix.github.io/metro), in this short showcase for CSC317 I thought to try something new but still within the realms of NPR.
