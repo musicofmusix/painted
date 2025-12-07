@@ -19,7 +19,7 @@ Compilation and execution was confirmed on an Apple M1 Pro machine running macOS
 - Run the executable using the showcase data files (within the build directory, run: `./shaderpipeline ../data/showcase.json ../data/showcase.obj`)
 
 ## List of Features Added
-- Handcrafted paint-like alpha masks generated from Voronoi noise, implemented in GLSL (src/painterly.fs)
+- Paint-like alpha masks generated from Voronoi noise, implemented in GLSL (src/painterly.fs)
 - Stylised toon shading, implemented in GLSL (src/painterly.fs)
 - Custom-modelled scene geometry using Blender geometry nodes (data/showcase.obj)
 - Combined all of the above for a painterly render of a “CSC317!” scene
