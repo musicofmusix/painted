@@ -19,9 +19,9 @@ Compilation and execution was confirmed on an Apple M1 Pro machine running macOS
 - Run the executable using the showcase data files (within the build directory, run: `./shaderpipeline ../data/showcase.json ../data/showcase.obj`)
 
 ## List of Features Added
-- Paint-like alpha masks generated from Voronoi noise, implemented in GLSL (src/painterly.fs)
-- Stylised toon shading, implemented in GLSL (src/painterly.fs)
-- Custom-modelled scene geometry using Blender geometry nodes (data/showcase.obj)
+- Paint-like alpha masks generated from Voronoi noise, implemented in GLSL (`src/painterly.fs`)
+- Stylised toon shading, implemented in GLSL (`src/painterly.fs`)
+- Custom-modelled scene geometry using Blender geometry nodes (`data/showcase.obj`)
 - Combined all of the above for a painterly render of a “CSC317!” scene
 - Minor modifications to `main.cpp`, `mesh_to_vao.h`, `pass-through.vs`, `pass-through.tcs`, `pass-through.tes` and the addition of `tiny_obj_loader.h` to allow OBJ file reading and the passing of UV + normals to the fragment shader. To speed up implementation, I have used an external library (`tiny_obj_loader.h`) and its sample code at: https://github.com/tinyobjloader/tinyobjloader.
 
