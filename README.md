@@ -22,11 +22,11 @@ Compilation and execution was confirmed on an Apple M1 Pro machine running macOS
 - Paint-like alpha masks generated from Voronoi noise, implemented in GLSL (`src/painterly.fs`)
 - Stylised toon shading, implemented in GLSL (`src/painterly.fs`)
 - Custom-modelled scene geometry using Blender geometry nodes (`data/showcase.obj`)
-- Combined all of the above for a painterly render of a “CSC317!” scene
 - Minor modifications to `main.cpp`, `mesh_to_vao.h`, `pass-through.vs`, `pass-through.tcs`, `pass-through.tes` and the addition of `tiny_obj_loader.h` to allow OBJ file reading and the passing of UV + normals to the fragment shader. To speed up implementation, I have used an external library (`tiny_obj_loader.h`) and its sample code at: https://github.com/tinyobjloader/tinyobjloader.
+- Combined all of the above for a painterly render of a “CSC317!” scene
 
 ## Background
-I love non-photorealistic rendering (NPR). There is a certain charm to stylised 3D work that often makes them timeless (see [The Legend of Zelda: The Wind Waker](https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_The_Wind_Waker) from 2002!), which is, in my opinion, much more difficult to achieve in photorealistic rendering. Therefore, following my previous NPR projects such as [METRO](https://musicofmusix.github.io/metro), in this short showcase for CSC317 I thought to try something new but still within the realms of NPR.
+I love non-photorealistic rendering (NPR). There is a certain charm to stylised 3D work that often makes them timeless (see [The Legend of Zelda: The Wind Waker](https://en.wikipedia.org/wiki/The_Legend_of_Zelda:_The_Wind_Waker) from 2002!), which is, in my opinion, much more difficult to achieve in photorealistic rendering. Therefore, following my previous NPR projects such as [METRO](https://musicofmusix.github.io/metro), in this short showcase for CSC317 I thought to try something new within the realms of NPR.
 
 A subgenre of NPR is what is called “painterly rendering”. This involves techniques to make a 3D render or photograph look like it was painted by hand using watercolour, oil, etc. A personal favourite of mine is the [Kuwahara filter](https://en.wikipedia.org/wiki/Kuwahara_filter). However, I found that many of these techniques were not 100% convincing, and producing a good-looking result would involve a lot of *acutal* handcrafted work (Arcane, a 3D animated show, had most of its [background scenes drawn by hand](https://www.artstation.com/artwork/034KX4)). So when I saw this [Reddit post](https://www.reddit.com/r/blender/comments/1pb1i7p/no_lights_all_phong/) 5 days ago, I was beyond shocked to see how real it looked (as a painting):
 
@@ -79,14 +79,15 @@ A large background plane can be added using the same method:
 ![](img/text-bg.png)
 
 Now, we have all the components needed for implementation in code!
+
 ## Modifying A6
 We will be modifying Assignment 6: Shader Pipeline, as it already provides many of the groundwork and most of our work will simply involve opening the geometry OBJ file exported from Blender, and creating a new fragment shader (FS) that implements our paint-like blobs.
 
-The original A6 implementation went something like this: In main.cpp (CPU), create an icosahedron (polyhedron “sphere”) and send its vertices and faces to the vertex shader (VS) - tessellation control shader (TCS) - tessellation evaluation shader (TES) - FS chain where we decorated a planet and its moon.
+The original A6 implementation went something like this: In main.cpp (CPU), create an icosahedron (polyhedron “sphere”) and send its vertices and faces to the vertex shader (VS) - tessellation control shader (TCS) - tessellation evaluation shader (TES) - FS chain. From here, we decorated a planet.
 
-This all seems very standard, but there was a simplification trick used during all of this: we were dealing with *spheres*. This meant that we did not need to pass along normals through the VS-TCS-TES-FS chain, as the surface position = normal. It also meant that no UV coordinates had to be passed either, as we assumed a single type of geometry.
+This all seems very standard, but there was a simplification trick used during all of this: we were dealing with *spheres*. This meant that we did not need to pass along normals through the VS-TCS-TES-FS chain, as the surface position *was* the normal. It also meant that no UV coordinates had to be passed on either, as we assumed a single type of geometry.
 
-But now, we are dealing with an arbitrary mesh file (OBJ) with an arbitrary number of planes, each with their own normal and UV coordinates.
+But now, we are dealing with an arbitrary mesh file (OBJ) with any number of plane objects, each with their own normal and UV coordinates. Therefore, we make the following modifications...
 
 ### Adding an OBJ Reader
 The first modification is to add OBJ file reading functionality. Thankfully, [tinyobjloader](https://github.com/tinyobjloader/tinyobjloader) (`tiny_obj_loader.h`) on GitHub is a simple drop-in method. We can simply use its provided sample code, as well as edit `main.cpp` and `mesh_to_vao.h` to send vertices, faces, UVs, and normals to the GPU.
@@ -107,7 +108,7 @@ While we do work in GLSL this time, the core logic is exactly the same as the Bl
 
 ![](img/glsl-toon.png)
 
-The toon shading logic was simple in the shadergraph, so it is also simple here. However, unlike in Blender, we do not have access to “object ID” information which tells us whether the current fragment belongs to the “CSC317!” text or the background! But fret not, as we have object-space positions. In Blender, we have positioned the text in front of the background, with a significant gap in between. All objects are also axis-aligned to the XY plane. That means, we can simply look at  Z coordinate value to determine the object we are dealing with! Using this, we apply green/yellow toon shades to the background, and pink shades to the text.
+The toon shading logic was simple in the shadergraph, so it is also simple here. However, unlike in Blender, we do not have access to “object ID” information which tells us whether the current fragment belongs to the “CSC317!” text or the background! But fret not, as we have object-space positions. In Blender, we have positioned the text in front of the background, with a significant gap in between. All objects are also axis-aligned to the XY plane. That means, we can simply look at the Z coordinate value to determine the object we are dealing with! Using this, we apply green/yellow toon shades to the background, and pink shades to the text.
 
 ![](piece2.png)
 
